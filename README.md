@@ -1,122 +1,313 @@
-# TaskForge
+# TaskForge – Autonomous Multi-Agent AI Platform
 
-Autonomous multi-agent task execution platform. The current repository includes JWT authentication, MySQL/XAMPP persistence, Gemini planning, specialist-agent execution and verification, Tavily-backed research, PDF/DOCX document generation, and the Milestone 5 Data Analysis Studio. Exam Solver, durable background workers, and production deployment hardening remain future work.
+**TaskForge** is an AI-powered productivity platform designed to simplify complex tasks through intelligent planning, multi-agent workflows, research automation, document processing, and data analysis.
 
-## Requirements
-- Windows 10/11, VS Code
-- Python 3.11+
-- Node.js 20+ and npm
-- XAMPP with MySQL running
-- Gemini and Tavily API keys for AI workflows
+It combines a modern React frontend with a Python Flask backend to provide an integrated workspace where users can organize tasks, generate AI-powered plans, execute workflows, and manage their productivity efficiently.
 
-## 1. Database
-1. Start **MySQL** in XAMPP (Apache is not required for Flask).
-2. Open `http://localhost/phpmyadmin`.
-3. Import `database/schema.sql`.
-4. Copy `.env.example` to `.env` in the project root and set DB credentials and API keys. The default XAMPP MySQL root password is often blank on local installations; use your actual setting.
+---
 
-## 2. Backend
-```powershell
+## Overview
+
+TaskForge aims to transform how users approach complex work by combining AI assistance with specialized agents.
+
+Instead of manually handling every step, users can leverage AI-powered planning, research, execution, and analysis capabilities through a unified platform.
+
+## Key Features
+
+- **AI Task Planning:** Convert complex tasks into structured plans and actionable steps.
+- **Multi-Agent Architecture:** Specialized agents for planning, research, and task execution.
+- **AI Research Assistant:** Conduct research and organize relevant information.
+- **Task Management:** Create, manage, and track tasks and their execution.
+- **Document Processing:** Upload, process, and generate documents.
+- **AI Data Analysis:** Analyze datasets and generate meaningful insights.
+- **AI Exam Solver:** Support exam-related problem solving.
+- **Authentication:** Secure user registration and login with JWT-based authentication.
+- **Modern Dashboard:** User-friendly interface built with React and Tailwind CSS.
+
+## Technology Stack
+
+### Frontend
+- React.js
+- Vite
+- JavaScript
+- Tailwind CSS
+- Axios
+
+### Backend
+- Python
+- Flask
+- Flask REST API
+- SQLAlchemy
+- JWT Authentication
+
+### Artificial Intelligence
+- Groq API
+- Groq-hosted LLMs
+- Tavily API
+- Multi-Agent Architecture
+
+### Database
+- MySQL
+- SQL
+- Database Migrations
+
+### Development & Deployment
+- Git & GitHub
+- Visual Studio Code
+- Render
+
+## Project Architecture
+
+```text
+TASKFORGE/
+│
+├── backend/
+│   ├── app/
+│   │   ├── agents/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   ├── storage/
+│   │   └── utils/
+│   │
+│   ├── config.py
+│   ├── requirements.txt
+│   ├── run.py
+│   └── test_gemini.py
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── context/
+│   │   ├── services/
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── styles.css
+│   ├── package.json
+│   └── vite.config.js
+│
+├── database/
+│   ├── migrations/
+│   └── schema.sql
+│
+├── docs/
+│   ├── api_documentation.md
+│   ├── architecture.md
+│   └── TaskForge_Product_Requirements_Document_PRD.pdf
+│
+├── tests/
+│
+├── .gitignore
+├── CHANGELOG.md
+└── README.md
+```
+
+## Getting Started
+
+Follow these instructions to run TaskForge locally.
+
+### Prerequisites
+
+Install the following:
+
+- Python 3.10+
+- Node.js and npm
+- MySQL or XAMPP
+- Git
+- Google Gemini API Key
+- Tavily API Key (if using research functionality)
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/NileshHI-coder/TASKFORGE.git
+cd TASKFORGE
+```
+
+### 2. Backend Setup
+
+Navigate to the backend directory:
+
+```bash
 cd backend
-py -3 -m venv .venv
-.venv\Scripts\activate
+```
+
+Create a virtual environment:
+
+```bash
+python -m venv venv
+```
+
+Activate it on Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+Install dependencies:
+
+```bash
 pip install -r requirements.txt
+```
+
+### 3. Environment Configuration
+
+Create a `.env` file inside the `backend/` directory.
+
+```env
+FLASK_SECRET_KEY=your_secret_key
+JWT_SECRET_KEY=your_jwt_secret
+GROQ_API_KEY=your_groq_api_key
+TAVILY_API_KEY=your_tavily_api_key
+```
+
+Add your database configuration using the variable names expected by the backend.
+
+**Important:** Never upload your `.env` file or expose API keys publicly.
+
+### 4. Database Setup
+
+1. Start MySQL using XAMPP or your installed MySQL server.
+2. Create the TaskForge database.
+3. Configure database credentials in your backend environment.
+4. Execute the SQL schema from:
+
+```text
+database/schema.sql
+```
+
+5. Apply any required migrations from:
+
+```text
+database/migrations/
+```
+
+### 5. Start the Backend
+
+From the `backend/` directory:
+
+```bash
 python run.py
 ```
-API: `http://localhost:5000/api/health`
 
-## 3. Frontend
-Open a second terminal:
-```powershell
+The Flask server will start using the host and port configured in the application.
+
+### 6. Frontend Setup
+
+Open another terminal:
+
+```bash
 cd frontend
+```
+
+Install dependencies:
+
+```bash
 npm install
+```
+
+Create a frontend `.env` file if required:
+
+```env
+VITE_API_BASE_URL=http://localhost:5000
+```
+
+Use the actual backend port configured in your application.
+
+Start the development server:
+
+```bash
 npm run dev
 ```
-Open `http://localhost:5173`. If PowerShell blocks `npm.ps1`, run `npm.cmd install` and `npm.cmd run dev`, or use Command Prompt.
 
-## API keys
-- Gemini: create an API key in Google AI Studio and set `GEMINI_API_KEY`.
-- Tavily: create an API key in the Tavily dashboard and set `TAVILY_API_KEY`.
-Keys stay on the Flask backend; never add them to Vite variables.
+Open the local URL displayed by Vite in your browser.
 
-## Current API
-- `GET /api/health` — service/database status
-- `POST /api/auth/register` — `{name,email,password}`
-- `POST /api/auth/login` — `{email,password}`; returns bearer token
-- `GET /api/auth/me` — authenticated profile
-- `POST /api/tasks` — `{title,description,category}`; authenticated
-- `GET /api/tasks` — authenticated user's tasks
-- `GET /api/tasks/<id>` — authenticated task detail
-- `DELETE /api/tasks/<id>` — delete own task
-- `POST /api/integrations/tavily/test` — authenticated live Tavily test
+---
 
-## Project status
-Milestones 1–4 are implemented in the codebase: authentication, MySQL task persistence, Gemini planning, specialist-agent request-driven execution, Tavily research, and PDF/DOCX generation. External Gemini/Tavily calls and MySQL connectivity still require the user's own credentials and local environment; they have not been live-tested here. Exam Solver, durable background workers, and production deployment hardening remain in progress. Milestone 5 adds a persisted Data Analysis Studio.
+## API Modules
 
-## Security notes
-Use a unique secret in `.env`; do not deploy XAMPP/phpMyAdmin publicly. Local file storage is for development only. Add HTTPS, rate limits, CSRF strategy, malware scanning, and managed storage before production.
+TaskForge organizes its backend functionality into dedicated route modules.
 
-## Milestone 2 — Planner workflow
-- `POST /api/tasks/<id>/plan` — calls Gemini to create a structured plan and persists ordered subtasks for review.
-- `POST /api/tasks/<id>/approve-plan` — approves the saved plan and queues its subtasks; it does **not** launch agents yet.
-- `GET /api/tasks/<id>` — now includes the task's subtasks and approval state.
-- Open a task from the dashboard or task list to review, regenerate, and approve its plan.
+| Module | Responsibility |
+|---|---|
+| Authentication | Registration and login |
+| Tasks | Task creation and planning |
+| Research | AI-powered research |
+| Documents | Document management |
+| Data Analysis | Dataset analysis |
+| Exam Solver | Exam-related problem solving |
+| Integrations | External service integrations |
 
-If you already imported the Milestone 1 database schema, run `database/migrations/002_planner_workflow.sql` in phpMyAdmin before starting this version. For a fresh installation, import the updated `database/schema.sql` instead; do not run both the migration and the fresh schema changes.
+Refer to `docs/api_documentation.md` for additional API details.
 
-The Planner Agent requires a valid `GEMINI_API_KEY`. A missing key or provider failure is shown as an API error; no sample plan is substituted.
+## AI Architecture
 
+TaskForge uses a specialized multi-agent architecture to organize AI-powered operations.
 
-## Milestone 3 — Specialist execution
+The backend includes:
 
-After approving a generated plan, open its task detail page and choose **Execute next subtask**. TaskForge dispatches the next dependency-ready subtask to its assigned specialist agent, stores the execution record and output in MySQL, and updates the task status. Execute one subtask per request so progress remains inspectable and requests do not silently claim that an entire plan has completed. Failed subtasks can be retried from the task page. Once all subtasks complete, run the independent Verification Agent and review its report.
+- **Planner Agent:** Analyzes tasks and creates structured plans.
+- **Research Agent:** Supports information gathering and research.
+- **Execution Agents:** Handle specialized execution workflows.
+- **Execution Service:** Coordinates execution operations.
 
-Execution API routes (JWT required):
-- `POST /api/tasks/<id>/execute-next` — execute the next queued subtask.
-- `POST /api/tasks/<id>/subtasks/<subtask_id>/retry` — requeue a failed subtask.
-- `POST /api/tasks/<id>/verify` — independently review all completed outputs.
-- `GET /api/tasks/<id>/executions` — inspect execution records and activity history.
+The architecture is designed to make complex workflows easier to manage and extend.
 
-The current runner is request-driven, not a durable background worker. Keep the Flask development server available while an agent request is running. For long tasks and production deployment, a worker queue and live progress transport are still required.
+## Testing
 
+Run backend tests from the project root:
 
-## Milestone 4 — Research & Document Studio
+```bash
+python -m pytest tests/
+```
 
-- `POST /api/research/<task_id>/run` — runs Tavily search and Gemini synthesis for an owned research/general/planning task. Optional JSON: `query`, `max_results` (1–10), `search_depth` (`basic`/`advanced`), `topic` (`general`/`news`/`finance`), `include_domains`, `exclude_domains`.
-- `POST /api/research/<task_id>/export` — exports the saved research report as `pdf` or `docx`.
-- `POST /api/documents/generate` — JSON fields: `task_id`, `title`, `instructions`, `content`, `format` (`pdf`/`docx`). Gemini drafts from supplied/task content; it is not instructed to invent missing facts.
-- `GET /api/documents/files` — list generated files owned through the user's tasks.
-- `GET /api/documents/files/<file_id>/download` — authenticated download.
+Individual tests are also available in the `tests/` directory.
 
-Generated files are stored under `backend/app/storage/generated` for local development. Tavily retries transient provider failures up to three attempts; sources without URLs are excluded, and missing publication dates are labelled as not supplied. This is not a claim that the providers are reachable until valid API keys are configured and tested.
+## Deployment
 
-## Milestone 5 — Data Analysis Studio
+TaskForge is designed for separate frontend and backend deployment.
 
-For an existing database, run `database/migrations/005_data_analysis.sql` in phpMyAdmin. For a fresh installation, import the updated `database/schema.sql` instead.
+| Component | Deployment |
+|---|---|
+| Frontend | Render Static Site |
+| Backend | Render Web Service |
+| Database | Hosted MySQL-compatible database |
+| AI Services | Gemini API and Tavily API |
 
-- `POST /api/data/upload` — authenticated multipart upload (`file`) for CSV/XLS/XLSX, maximum 10 MB; computes dataset profile, preview, missing values, duplicate rows, numeric statistics, categorical distributions and pairwise correlations.
-- `GET /api/data/runs` — list the signed-in user's analysis history.
-- `GET /api/data/runs/<run_id>` — retrieve an owned analysis.
-- `POST /api/data/runs/<run_id>/insights` — ask Gemini to interpret the computed summary, including limitations.
-- Files are stored under `backend/app/storage/datasets`; metadata and computed results are stored in MySQL. The frontend `/data` route now contains the Data Analysis Studio with history, preview, tables, chart and AI insight action.
+Production deployment requires configuring environment variables, database connectivity, CORS, and the appropriate frontend API URL.
 
-Limits: 10 MB upload, 100,000 rows and 150 columns. This milestone performs read-only profiling; it does not overwrite or modify the uploaded source dataset. Statistical outputs are computed with Pandas/NumPy. AI commentary is an interpretation, not a substitute for validating the source data.
+## Security
 
-## Milestone 6 — Exam Solver
+- Keep API keys and credentials in environment variables.
+- Never commit `.env` files.
+- Use strong production secrets.
+- Enable appropriate CORS restrictions.
+- Protect authenticated endpoints.
+- Use HTTPS in production.
 
-The Exam Solver accepts PDF and image question papers, extracts text with PyMuPDF and optional Tesseract OCR, segments up to 30 detected questions, classifies question types, generates worked answers with Gemini, and runs a separate Gemini verification pass. Solutions can be exported as PDF or DOCX. Exam runs and results are scoped to the authenticated MySQL user.
+## Future Enhancements
 
-### Database migration
-Run `database/migrations/006_exam_solver.sql` against the existing `taskforge` MySQL database after applying earlier migrations.
+- Advanced autonomous agent collaboration.
+- Improved real-time agent execution monitoring.
+- Enhanced workflow automation.
+- Advanced task analytics and reporting.
+- Additional AI model integrations.
+- Improved document generation and management.
+- Scalable cloud deployment.
 
-### OCR setup
-Install Python packages with `pip install -r backend/requirements.txt`. For scanned PDFs and image uploads, install the **Tesseract OCR system executable** separately and ensure it is on PATH. Text-based PDFs work with PyMuPDF without Tesseract. If Tesseract is unavailable, scanned pages may yield no readable text and the API will report that limitation.
+## Author
 
-### Exam Solver API
-- `POST /api/exams/upload` — authenticated multipart upload (`file`); extracts and segments questions.
-- `GET /api/exams/runs` — list the current user's uploads.
-- `GET /api/exams/runs/<id>` — retrieve one owned upload and its results.
-- `POST /api/exams/runs/<id>/solve` — generate answers and run an independent review pass.
-- `GET /api/exams/runs/<id>/download?format=pdf|docx` — download a solved paper.
+**Nilesh Prajapati**
 
-Limits: 15 MB per upload, 40 PDF pages, 30 detected questions, and 5,000 characters per question. OCR output and AI-generated answers must be reviewed; the verification pass is not a guarantee of correctness. Gemini credentials are required for solving. Existing Gemini, Tavily, MySQL and authentication configuration is retained.
+B.Tech Computer Engineering Student
+
+- GitHub: [@NileshHI-coder](https://github.com/NileshHI-coder)
+- LinkedIn: [Nilesh Prajapati](https://www.linkedin.com/in/nilesh-prajapati-4a9593345/)
+
+## Repository
+
+[GitHub – TaskForge](https://github.com/NileshHI-coder/TASKFORGE)
+
+---
+
+*TaskForge – Plan Smarter. Execute Faster. Achieve More.*
