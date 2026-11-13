@@ -1,0 +1,16 @@
+# secrets
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+node_modules/
+dist/
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/outputs/*
+!backend/outputs/.gitkeep
+*.log
+backend/app/storage/*
+!backend/app/storage/.gitkeep
